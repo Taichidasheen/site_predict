@@ -23,9 +23,15 @@ func RunHiFiTask(opts Options) error {
 	}
 	log.Printf("loaded model:%v", model)
 
+	log.Printf("aaaaaa")
+
 	//step2: read in read-level prediction
 	ZMWprobDictNorm, countBasedPredDict, depthOfMolCovDict := normZMWprediction_H(hiFiZMW, minzmwDepth)
+
+	log.Printf("bbbbbb")
 	XTest, XAveWeights, ZMWprobDictPosListSorted := CreateDataMatrixDistanceTesting(ZMWprobDictNorm, windowRadius)
+
+	log.Printf("ccccccc")
 
 	//step3: do the prediction
 	probes, err := predict.Predict(model, XTest)
@@ -55,7 +61,7 @@ func normZMWprediction_H(ZMWprefile_HiFi string, minZMWDepth int) (map[string][]
 	// Read HiFi file
 	hifiLines, err := readFile(ZMWprefile_HiFi)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("%s readFile err:%+v", ZMWprefile_HiFi, err)
 	}
 	for _, line := range hifiLines {
 		if !strings.Contains(line, "nan") && !strings.HasPrefix(line, "Chr") {
